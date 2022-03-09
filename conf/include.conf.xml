@@ -1,0 +1,23 @@
+<xml>
+	<!-- include default configuration file (relative to this file) -->
+	<include src="{EXT}/conf/common.conf.xml" />
+
+	<!-- group source files -->
+	<js id="thrastro.shaders.core" >
+		<!-- add webworker support -->
+		<input path="../thrastro-shaders/src/CustomShader.js" />
+		<input path="../thrastro-shaders/src/FirmamentShader.js" />
+		<input path="../thrastro-shaders/src/OrbitalsShader.js" />
+		<input path="../thrastro-shaders/src/EclipseShader.js" />
+		<input path="../thrastro-shaders/src/PlanetShader.js" />
+		<input path="../thrastro-shaders/src/GroundShader.js" />
+		<input path="../thrastro-shaders/src/SkyShader.js" />
+		<input path="../thrastro-shaders/src/RingShader.js" />
+	</js>
+
+	<!-- group collections -->
+	<js id="thrastro.shaders.base" >
+		<input id="thrastro.shaders.core" />
+	</js>
+
+</xml>

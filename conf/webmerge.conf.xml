@@ -1,0 +1,44 @@
+<xml>
+	<!-- include default configuration file (relative to this file) -->
+	<include src="{EXT}/conf/common.conf.xml" />
+
+	<config>
+		<!-- where is your htdocs root directory -->
+		<!-- this is needed to create absolute urls -->
+		<!-- default is relative to the config file -->
+		<webroot>{CONF}/..</webroot>
+		<directory>{WWW}</directory>
+		<webport>8092</webport>
+		<!-- enable optimizers -->
+		<optimize-png>1</optimize-png>
+		<optimize-jpg>1</optimize-jpg>
+		<optimize-gif>1</optimize-gif>
+		<!-- use modern js syntax -->
+		<closure-lang-in>ECMASCRIPT_2015</closure-lang-in>
+		<closure-lang-out>ECMASCRIPT_2015</closure-lang-out>
+		<!-- disable checksums -->
+		<crc-check>0</crc-check>
+		<crc-file>0</crc-file>
+	</config>
+
+	<!-- prepare operations -->
+	<prepare step="prepare" disabled="false" >
+		<!-- create neccessary paths -->
+		<mkdir path="build" />
+	</prepare>
+
+	<!-- include main file-listening -->
+	<include src="conf/include.conf.xml" />
+
+	<!-- main merge operations -->
+	<js>
+		<input id="thrastro.shaders.base" />
+		<!-- prefix copyright header to minimized version -->
+		<prefix path="conf/license.header.txt" target="compile" />
+		<!-- generate different output versions -->
+		<output path="build/thrastro.shaders.src.js" target="join" />
+		<output path="build/thrastro.shaders.dev.js" target="dev" />
+		<output path="build/thrastro.shaders.min.js" target="compile" />
+	</js>
+
+</xml>

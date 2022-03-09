@@ -1,0 +1,3 @@
+[submodule "thrastro-vendors"]
+	path = thrastro-vendors
+	url = https://github.com/THRASTRO/thrastro-vendors

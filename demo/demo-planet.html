@@ -1,0 +1,27 @@
+<html>
+<head>
+    <script>var webmerge = { webroot: document.location.href + "/../.." }</script>
+    <script src="../thrastro-vendors/three-r138.patched.js"></script>
+    <script src="../thrastro-vendors/three.dat.gui.js"></script>
+    <script src="../thrastro-vendors/TrackballControls.js"></script>
+    <script src="../build/thrastro.shaders.dev.js"></script>
+    <style>
+        html, body {
+            overflow: hidden;
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <script src="00-consts.js"></script>
+    <script src="01-demo.js"></script>
+    <script src="11-sun.js"></script>
+    <script src="22-planet.js"></script>
+    <script>
+        sun.position.set(0, 0, 1);
+        camera.position.set(5e-5, 0, 25e-4);
+        scene.position.set(-12, 32, -2);
+    </script>
+</body>
+</html>

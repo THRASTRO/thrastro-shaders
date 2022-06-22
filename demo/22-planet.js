@@ -72,6 +72,8 @@ var ringMaterial = new THRAPP.RingShader({
     eclipsers: [eclipser],
     side: THREE.DoubleSide,
     transparent: true,
+    // To calculate shadows
+    planetRadius: earthRadi,
 });
 
 var uvs = ringGeometry.attributes.uv.array;

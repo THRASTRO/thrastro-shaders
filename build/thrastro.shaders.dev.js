@@ -45,6 +45,6 @@ webmerge.includeJS('/src/GroundShader.js?2FBB3F8EC3BD');
 ;
 webmerge.includeJS('/src/SkyShader.js?42427D162954');
 ;
-webmerge.includeJS('/src/RingShader.js?083166D955B8');
+webmerge.includeJS('/src/RingShader.js?1B6831458894');
 
-/* crc: B08E36111B05FD706DFC2462F557135B */
+/* crc: 70CB69A18639C560475405FE22B52D82 */

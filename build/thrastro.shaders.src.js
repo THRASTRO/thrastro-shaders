@@ -2324,8 +2324,8 @@ if (!window.THRAPP) {
       this.setDefines({
         NUM_ECLIPSERS: 0,
       });
-      if (parameters.radius) {
-        this.uniforms.radius.value = parameters.radius;
+      if (parameters.planetRadius) {
+        this.uniforms.planetRadius.value = parameters.planetRadius;
       }
       if (parameters.eclipsers) {
         var eclipsers = parameters.eclipsers;
@@ -2337,7 +2337,7 @@ if (!window.THRAPP) {
 
     addUniforms(uniforms) {
       super.addUniforms(uniforms);
-      uniforms.radius = { type: "f", value: 0 };
+      uniforms.planetRadius = { type: "f", value: 0 };
     }
     // EO addUniforms
 
@@ -2349,7 +2349,7 @@ if (!window.THRAPP) {
         after: /<common>/,
         shader: [
           "  // The planetary radius",
-          "  uniform float radius;",
+          "  uniform float planetRadius;",
           "  // Pass world space to fragments",
           "  varying vec3 vertexPos;",
           "  varying vec3 originPos;",
@@ -2377,7 +2377,7 @@ if (!window.THRAPP) {
         after: /<common>/,
         shader: [
           "  // The planetary radius",
-          "  uniform float radius;",
+          "  uniform float planetRadius;",
           "  // Pass world space to fragments",
           "  varying vec3 vertexPos;",
           "  varying vec3 originPos;",
@@ -2396,8 +2396,8 @@ if (!window.THRAPP) {
           "    // determine the direction of B relative to A.",
           "    vec3 AB_dir = normalize( AB );",
           "    // compute the distance between A and Q using the dot",
-          "    // product trick.  The first argument is a unit length",
-          "    // vector.  The second argument is a point *relative to",
+          "    // product trick. The first argument is a unit length",
+          "    // vector. The second argument is a point *relative to",
           "    // that vector*.",
           "    float AQ_len = dot( AB_dir, P - A );",
           "    // Now that we know the length of AQ, we can compute Q.",
@@ -2420,7 +2420,7 @@ if (!window.THRAPP) {
           "    vec3 light = pointLights[ i ].position;",
           "    // Calculate distance from touch point from planet origin",
           "    float dist = lineDistToPoint(vertexPos, light, originPos);",
-          "    shaded += 1.0 - clamp(pow(dist / radius, 64.0), 0.0, 1.0);",
+          "    shaded += 1.0 - clamp(pow(dist / planetRadius, 64.0), 0.0, 1.0);",
           THRAPP.EndStaticForLoop("i", "NUM_POINT_LIGHTS"),
           "#endif",
           "#if NUM_POINT_LIGHTS > 1",
@@ -2445,7 +2445,7 @@ if (!window.THRAPP) {
   // ######################################################################
   // ######################################################################
 
-  RingShader.prototype.radius = null;
+  RingShader.prototype.planetRadius = null;
   RingShader.prototype.eclipsers = null;
 
   // assign class to global namespace
@@ -2456,4 +2456,4 @@ if (!window.THRAPP) {
 })(THREE, THRAPP);
 // EO private scope
 
-/* crc: B08E36111B05FD706DFC2462F557135B */
+/* crc: 70CB69A18639C560475405FE22B52D82 */

@@ -34,7 +34,7 @@ if (!window.THRAPP) {
         atmosphere.exposure = atmosphere.exposure || 2.5;
         atmosphere.scaleDepth = atmosphere.scaleDepth || 0.25;
         atmosphere.scaleHeight = atmosphere.scaleHeight || 1.025;
-        atmosphere.innerRadius = atmosphere.innerRadius || r * KM2AU;
+        atmosphere.innerRadius = (atmosphere.innerRadius || 0) * KM2AU;
 
         var wavelength = atmosphere.wavelength;
         uniforms.v3InvWavelength.value.set(

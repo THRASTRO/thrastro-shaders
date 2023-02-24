@@ -412,8 +412,8 @@ void main()
             // in case you forgot to define opacity (default is 0)
             // gl_FragColor.a *= 1.0 - lucency;
         
-            // gl_FragColor.a = max(gl_FragColor.a, 0.3);
-            // gl_FragColor.r += 0.2;
+             gl_FragColor.a = max(gl_FragColor.a, 0.3);
+             gl_FragColor.r += 0.2;
             
         
             // THREE.ShaderChunk[ 'logdepthbuf_fragment' ]

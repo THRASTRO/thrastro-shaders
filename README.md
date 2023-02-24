@@ -120,3 +120,11 @@ http://www.ocbnet.ch/thrastro-shaders/demo/demo-firmament.html
 ## RingShader
 
 This shader is used to render a "donut" around a planet.
+
+http://www.ocbnet.ch/thrastro-shaders/demo/demo-planet.html
+
+### OrbitalsShader
+
+Specialized shader to render instanced kepler orbital trails.
+
+http://www.ocbnet.ch/thrastro-shaders/demo/demo-orbitals.html

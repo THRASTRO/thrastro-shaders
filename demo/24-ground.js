@@ -18,6 +18,7 @@ var sphereMaterial = new THRAPP.GroundShader({
   // Eclipse shader config
   laserSize: 1e-6,
   radius: earthRadi,
+  camera: camera,
   stars: [sun],
   eclipsers: [eclipser],
   // Planet shader config

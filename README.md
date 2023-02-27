@@ -100,7 +100,7 @@ A highly specific shader only inheriting from `THRAPP.CustomMaterial`. It
 is also implemented according to the mentioned Nvidia GPU Gems 2 Chapter 16.
 It renders a sphere behind a planet representing the mir and rayleigh
 scattering of the atmosphere above a planet's surface. As such this shader
-needs to be rendered only on the backfaces of the geometry. Since the
+needs to be rendered only on the back-faces of the geometry. Since the
 calculation is expensive it only calculates the effect on each vertex and
 interpolates from there for fragments. This means the geometry needs to
 have a lot of vertices to get good results. This is still a better tradeoff
@@ -109,7 +109,7 @@ decision once ray-tracing becomes a (well supported) reality for WebGL.
 
 http://www.ocbnet.ch/thrastro-shaders/demo/demo-atmosphere.html
 
-### FirmamentShader
+## FirmamentShader
 
 Another highly specialized shader to render a star point cloud. It
 needs to be feed with optimized data that is currently generated via
@@ -119,11 +119,11 @@ http://www.ocbnet.ch/thrastro-shaders/demo/demo-firmament.html
 
 ## RingShader
 
-This shader is used to render a "donut" around a planet.
+This shader is used to render a flat "donut" around a planet.
 
 http://www.ocbnet.ch/thrastro-shaders/demo/demo-planet.html
 
-### OrbitalsShader
+## OrbitalsShader
 
 Specialized shader to render instanced kepler orbital trails.
 

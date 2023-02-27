@@ -21,6 +21,10 @@ if (!window.THRAPP) {
         NUM_SAMPLES: 16,
       });
 
+      if (!parameters.camera)
+        throw "Camera missing";
+      this.camera = parameters.camera;
+
       if (parameters.atmosphere) {
         var atmosphere = parameters.atmosphere;
         var uniforms = this.uniforms;
@@ -34,7 +38,7 @@ if (!window.THRAPP) {
         atmosphere.exposure = atmosphere.exposure || 2.5;
         atmosphere.scaleDepth = atmosphere.scaleDepth || 0.25;
         atmosphere.scaleHeight = atmosphere.scaleHeight || 1.025;
-        atmosphere.innerRadius = (atmosphere.innerRadius || 0) * KM2AU;
+        atmosphere.innerRadius = (atmosphere.innerRadius || 0);
 
         var wavelength = atmosphere.wavelength;
         uniforms.v3InvWavelength.value.set(
@@ -81,10 +85,11 @@ if (!window.THRAPP) {
       // Get world coordinates of objects
       camPos.setFromMatrixPosition(camera.matrixWorld)
       // Calculate the world to local matrix
-      mat4.copy(self.pbody.matrixWorld).invert();
-      // Transform world to local coordinates
-      camPos.applyMatrix4(mat4);
-      // console.log(sunPos, vec2);
+      if (self.pbody && self.pbody.matrixWorld) {
+        mat4.copy(self.pbody.matrixWorld).invert();
+        // Transform world to local coordinates
+        camPos.applyMatrix4(mat4);
+      }
       // Update derived uniforms
       var h2 = camPos.lengthSq(),
         h = Math.sqrt(h2);

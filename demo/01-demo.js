@@ -71,3 +71,12 @@ requestAnimationFrame(render);
 
 // Idempotent calls
 scene.add(camera);
+
+// Create background group
+var bg = new THREE.Group();
+
+// Scale Parsecs to astronomical units (AU)
+bg.scale.multiplyScalar(206264.80748432202);
+
+// Add background to scene
+scene.add(bg);

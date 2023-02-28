@@ -128,3 +128,9 @@ http://www.ocbnet.ch/thrastro-shaders/demo/demo-planet.html
 Specialized shader to render instanced kepler orbital trails.
 
 http://www.ocbnet.ch/thrastro-shaders/demo/demo-orbitals.html
+
+## ConstellationsShader
+
+Specialized shader to render (western) star constellations.
+
+http://www.ocbnet.ch/thrastro-shaders/demo/demo-constellations.html

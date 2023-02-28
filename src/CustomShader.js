@@ -24,10 +24,6 @@ if (!window.THRAPP) {
       parameters.glslVersion = "300 es";
       super(parameters);
     }
-    // type = "CustomRawShader";
-    vertexShaderPrefix(render) {
-      return '';
-    }
   }
 
   // ######################################################################
@@ -205,10 +201,10 @@ if (!window.THRAPP) {
       // EO getFragmentSubChunks
 
       // Method to add uniforms during setup
-      addUniforms(uniforms) {}
+      addUniforms(uniforms) { }
 
       // Called during render to update stuff
-      updateUniforms() {}
+      updateUniforms() { }
     }
 
     // Return mixed in class
@@ -291,7 +287,7 @@ if (!window.THRAPP) {
   // ######################################################################
   // ######################################################################
 
-  THRAPP.StartStaticForLoop = function(name, len) {
+  THRAPP.StartStaticForLoop = function (name, len) {
     return [
       `#if ${len} > 0`,
       `#if ${len} > 1`,
@@ -303,7 +299,7 @@ if (!window.THRAPP) {
     ].join("\n");
   }
 
-  THRAPP.EndStaticForLoop = function(name, len) {
+  THRAPP.EndStaticForLoop = function (name, len) {
     return [
       "  }",
       "#endif",

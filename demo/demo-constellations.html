@@ -1,7 +1,6 @@
 <html>
 <head>
     <script>var webmerge = { webroot: document.location.href + "/../.." }</script>
-    <link rel="stylesheet" href="../thrastro-vendors/three.dat.gui.css" />
     <script src="../thrastro-vendors/three-r150.patched.js"></script>
     <script src="../thrastro-vendors/three.dat.gui.js"></script>
     <script src="../thrastro-vendors/TrackballControls.js"></script>
@@ -19,8 +18,13 @@
     <script src="00-dat-gui.js"></script>
     <script src="01-demo.js"></script>
     <script src="10-firmament.js"></script>
+    <script src="13-constellations.js"></script>
     <script>
-        camera.position.set(5e-5, 0, 25e-4);
+        renderer.setClearColor("#030303");
+        camera.position.set(-4.5610867424369014e-7, 6.318700160721997e-8, 0.000006176717285529281);
+        camera.fov = 0.31240653895855647;
+        camera.position.set(0.15, 0, 7.5);
+        camera.fov = 75;
     </script>
 </body>
 </html>

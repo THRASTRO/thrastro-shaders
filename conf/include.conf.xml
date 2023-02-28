@@ -6,6 +6,7 @@
 	<js id="thrastro.shaders.core" >
 		<!-- add webworker support -->
 		<input path="../thrastro-shaders/src/CustomShader.js" />
+		<input path="../thrastro-shaders/src/ConstellationsShader.js" />
 		<input path="../thrastro-shaders/src/FirmamentShader.js" />
 		<input path="../thrastro-shaders/src/OrbitalsShader.js" />
 		<input path="../thrastro-shaders/src/EclipseShader.js" />

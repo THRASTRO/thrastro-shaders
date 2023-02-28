@@ -78,7 +78,7 @@ var orbitalMaterial = new THRAPP.OrbitalsShader({
   lucency: 0.5,
   trailStart: 0.00,
   trailLength: -0.75, // -0.75,
-  attenuate: 0.5,
+  attenuate: 0.00025,
 })
 
 var maxsize = 0; // Optimize via semi-major axes

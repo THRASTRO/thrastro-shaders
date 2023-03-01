@@ -73,12 +73,15 @@ orbitalGeometry.instanceCount = buffer.array.length / 6;
 // Create shader material for rendering the lines
 var orbitalMaterial = new THRAPP.OrbitalsShader({
   blending: THREE.AdditiveBlending,
-  defines: { 'ELEMENTS_VSOP': 1 },
+  defines: { 'ELEMENTS_VSOP': true },
   transparent: true,
   lucency: 0.5,
+  attenuate: 1.75,
   trailStart: 0.00,
-  trailLength: -0.75, // -0.75,
-  attenuate: 0.00025,
+  trailLength: 0.95,
+  // dat.gui hooks
+  datgui: window.gui,
+  name: 'Orbitals'
 })
 
 var maxsize = 0; // Optimize via semi-major axes

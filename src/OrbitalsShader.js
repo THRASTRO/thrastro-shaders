@@ -9,42 +9,36 @@
 
 
 if (!window.THRAPP) {
-    window.THRAPP = {};
-  }
-  
-  // private scope
-  (function (THREE, THRAPP) {
-    "use strict";
-  
-    var mat4 = new THREE.Matrix4();
-  
-    class OrbitalsShader extends THRAPP.CustomRawShader {
+  window.THRAPP = {};
+}
 
-        //prefixVertex() {
-        //    debugger;
-        //}
+// private scope
+(function (THREE, THRAPP) {
+  "use strict";
 
-      constructor(parameters) {
-        super(parameters);
-        //this.parameters.asd = 123;
-        // this.defines['ELEMENTS_VSOP'] = 1;
-        this.defines['USE_LOGDEPTHBUF'] = 1;
-        this.defines['USE_LOGDEPTHBUF_EXT'] = 1;
-        this.isRawShaderMaterial = true;
+  class OrbitalsShader extends THRAPP.CustomRawShader {
 
-        this.uniforms.time = { type: 'f', value: parameters.scale || 0.0 };
-        this.uniforms.scale = { type: 'f', value: parameters.scale || 1.0 };
-        this.uniforms.lucency = { type: 'f', value: parameters.lucency || 0.75 };
-        this.uniforms.attenuate = { type: 'f', value: parameters.attenuate || 0.0 };
-        this.uniforms.trailStart = { type: 'f', value: parameters.trailStart || 0.0 };
-        this.uniforms.trailLength = { type: 'f', value: parameters.trailLength || 1.0 };
+    constructor(parameters) {
+      super(parameters);
+      //this.parameters.asd = 123;
+      // this.defines['ELEMENTS_VSOP'] = 1;
+      this.defines['USE_LOGDEPTHBUF'] = 1;
+      this.defines['USE_LOGDEPTHBUF_EXT'] = 1;
+      this.isRawShaderMaterial = true;
 
-        if (this.defines['LAPLACE_PLANE'] != null) {
-          this.uniforms.laplaceEpoch = { type: 'f', value: parameters.laplaceEpoch || 0.0 };
+      this.uniforms.time = { type: 'f', value: parameters.scale || 0.0 };
+      this.uniforms.scale = { type: 'f', value: parameters.scale || 1.0 };
+      this.uniforms.lucency = { type: 'f', value: parameters.lucency || 0.75 };
+      this.uniforms.attenuate = { type: 'f', value: parameters.attenuate || 0.0 };
+      this.uniforms.trailStart = { type: 'f', value: parameters.trailStart || 0.0 };
+      this.uniforms.trailLength = { type: 'f', value: parameters.trailLength || 1.0 };
 
-        }
-        
-        this.vertexShader = `
+      if (this.defines['LAPLACE_PLANE'] != null) {
+        this.uniforms.laplaceEpoch = { type: 'f', value: parameters.laplaceEpoch || 0.0 };
+
+      }
+
+      this.vertexShader = `
 
         #define varying out
         #define attribute in
@@ -363,7 +357,7 @@ void main()
     //fragColor.a *= (1.0 - position);
 
 	// calculate the actual position
-	vec3 pos = orb2cart((position * trailLength) * PI2 + (trailStart) * PI2,
+	vec3 pos = orb2cart((position * - trailLength) * PI2 + (trailStart) * PI2,
 		l_orbitals[0], l_orbitals[1], l_orbitals[2],
 		h_orbitals[0], h_orbitals[1], h_orbitals[2]
 	);
@@ -382,7 +376,7 @@ void main()
 
         `;
 
-        this.fragmentShader = `
+      this.fragmentShader = `
         #define varying in
         out highp vec4 pc_fragColor;
         #define gl_FragColor pc_fragColor
@@ -412,8 +406,7 @@ void main()
             // in case you forgot to define opacity (default is 0)
             // gl_FragColor.a *= 1.0 - lucency;
         
-             gl_FragColor.a = max(gl_FragColor.a, 0.3);
-             gl_FragColor.r += 0.2;
+             // gl_FragColor.a = max(gl_FragColor.a, 0.0);
             
         
             // THREE.ShaderChunk[ 'logdepthbuf_fragment' ]
@@ -425,131 +418,139 @@ void main()
         // ***************************************************************
         
         `;
-      }
-      // EO constructor
-  
-      // Add a new light source
-      addOrbital(orbital) {
-//        if (!Array.isArray(stars)) stars = [stars];
-//        for (var i = 0; i < stars.length; i++) {
-//          this.stars.push(stars[i]);
-//          this.uniforms.lightPos.value.push(new THREE.Vector3());
-//          this.uniforms.lightSize.value.push((stars[i].radius || 0) * 2);
-//        }
-//        this.defines["NUM_STARS"] += stars.length;
-//        this.needsUpdate = true;
-      }
-      // EO addStar
-   
-      // Add uniforms to material (called during ctor)
-      // Do not call, this is for internal use only!
-      addUniforms(uniforms) {
-        super.addUniforms(uniforms);
-        // uniforms.trail = { type: 'f', value: 0 };
-        // uniforms.scale = { type: 'f', value: 0 };
-        // uniforms.lucency = { type: 'f', value: 0 };
-
-        
-        // uniforms.eclipserSize = { type: "fv1", value: [] };
-        // uniforms.eclipserPos = { type: "v3v", value: [] };
-        // uniforms.lightSize = { type: "fv1", value: [] };
-        // uniforms.lightPos = { type: "v3v", value: [] };
-        // uniforms.laserSize = { type: "f", value: 5e-7 };
-        // uniforms.bodyRadius = { type: "f", value: 5e-7 };
-      }
-      // EO addUniforms
-  
-      updateUniforms() {
-        var self = this,
-          uniforms = self.uniforms,
-          eclipsers = self.eclipsers,
-          stars = self.stars;
-        super.updateUniforms();
-        // if (self.pbody) {
-        //   self.pbody.updateMatrix();
-        //   mat4.copy(self.pbody.matrixWorld).invert();
-        // }
-        // // Update eclipser positions
-        // for (var i = 0; i < eclipsers.length; i += 1) {
-        //   uniforms.eclipserPos.value[i].setFromMatrixPosition(eclipsers[i].matrixWorld)
-        //   uniforms.eclipserPos.value[i].applyMatrix4(mat4);
-        // }
-        // // Update star positions
-        // for (var i = 0; i < stars.length; i += 1) {
-        //   uniforms.lightPos.value[i].setFromMatrixPosition(stars[i].matrixWorld)
-        //   uniforms.lightPos.value[i].applyMatrix4(mat4);
-        // }
-      }
-      // EO updateUniforms
-  
-      getVertexChunks() {
-        var chunks = super.getVertexChunks();
-        //***********************************************
-        //***********************************************
-        chunks.push({
-          after: /<common>/,
-          shader: [
-          ],
-        });
-  
-        chunks.push({
-          before: /<begin_vertex>/,
-          shader: [
-          ],
-        });
-        //***********************************************
-        //***********************************************
-        return chunks;
-      }
-  
-      getFragmentChunks() {
-        var chunks = super.getFragmentChunks();
-        //***********************************************
-        //***********************************************
-        chunks.push({
-          after: /<common>/,
-          shader: [
-          ],
-        });
-        //***********************************************
-        //***********************************************
-        chunks.push({
-          before: /<aomap_fragment>/,
-          shader: [],
-        });
-        chunks.push({
-          after: /<aomap_fragment>/,
-          shader: [
-          ],
-        });
-        //***********************************************
-        //***********************************************
-        chunks.push({
-          after: /vec3 outgoingLight/,
-          shader: [
-          ],
-        });
-        //***********************************************
-        //***********************************************
-        return chunks;
-      }
-      // EO getFragmentChunks
+      // Hookup optional dat.gui
+      if (!parameters.datgui) return;
+      var gui = parameters.datgui;
+      var uniforms = this.uniforms;
+      if (parameters.name) gui = gui.addFolder(parameters.name)
+      gui.add(uniforms.lucency, 'value', 0, 1).step(0.001).name('lucency');
+      gui.add(uniforms.attenuate, 'value', 0, 9).step(0.001).name('attenuate');
+      gui.add(uniforms.trailStart, 'value', 0, 1).step(0.001).name('trailStart');
+      gui.add(uniforms.trailLength, 'value', -1, 1).step(0.001).name('trailLength');
     }
-  
-    // ######################################################################
-    // ######################################################################
-  
-    OrbitalsShader.prototype.lucency = null;
-    OrbitalsShader.prototype.attenuate = null;
-    OrbitalsShader.prototype.trailLength = null;
-    OrbitalsShader.prototype.trailStart = null;
-    OrbitalsShader.prototype.trailEnd = null;
+    // EO constructor
 
-    // assign class to global namespace
-    THRAPP.OrbitalsShader = OrbitalsShader;
-  
-    // ######################################################################
-    // ######################################################################
-  })(THREE, THRAPP);
+    // Add a new light source
+    addOrbital(orbital) {
+      //        if (!Array.isArray(stars)) stars = [stars];
+      //        for (var i = 0; i < stars.length; i++) {
+      //          this.stars.push(stars[i]);
+      //          this.uniforms.lightPos.value.push(new THREE.Vector3());
+      //          this.uniforms.lightSize.value.push((stars[i].radius || 0) * 2);
+      //        }
+      //        this.defines["NUM_STARS"] += stars.length;
+      //        this.needsUpdate = true;
+    }
+    // EO addStar
+
+    // Add uniforms to material (called during ctor)
+    // Do not call, this is for internal use only!
+    addUniforms(uniforms) {
+      super.addUniforms(uniforms);
+      // uniforms.trail = { type: 'f', value: 0 };
+      // uniforms.scale = { type: 'f', value: 0 };
+      // uniforms.lucency = { type: 'f', value: 0 };
+
+
+      // uniforms.eclipserSize = { type: "fv1", value: [] };
+      // uniforms.eclipserPos = { type: "v3v", value: [] };
+      // uniforms.lightSize = { type: "fv1", value: [] };
+      // uniforms.lightPos = { type: "v3v", value: [] };
+      // uniforms.laserSize = { type: "f", value: 5e-7 };
+      // uniforms.bodyRadius = { type: "f", value: 5e-7 };
+    }
+    // EO addUniforms
+
+    updateUniforms() {
+      var self = this,
+        uniforms = self.uniforms,
+        eclipsers = self.eclipsers,
+        stars = self.stars;
+      super.updateUniforms();
+      // if (self.pbody) {
+      //   self.pbody.updateMatrix();
+      //   mat4.copy(self.pbody.matrixWorld).invert();
+      // }
+      // // Update eclipser positions
+      // for (var i = 0; i < eclipsers.length; i += 1) {
+      //   uniforms.eclipserPos.value[i].setFromMatrixPosition(eclipsers[i].matrixWorld)
+      //   uniforms.eclipserPos.value[i].applyMatrix4(mat4);
+      // }
+      // // Update star positions
+      // for (var i = 0; i < stars.length; i += 1) {
+      //   uniforms.lightPos.value[i].setFromMatrixPosition(stars[i].matrixWorld)
+      //   uniforms.lightPos.value[i].applyMatrix4(mat4);
+      // }
+    }
+    // EO updateUniforms
+
+    getVertexChunks() {
+      var chunks = super.getVertexChunks();
+      //***********************************************
+      //***********************************************
+      chunks.push({
+        after: /<common>/,
+        shader: [
+        ],
+      });
+
+      chunks.push({
+        before: /<begin_vertex>/,
+        shader: [
+        ],
+      });
+      //***********************************************
+      //***********************************************
+      return chunks;
+    }
+
+    getFragmentChunks() {
+      var chunks = super.getFragmentChunks();
+      //***********************************************
+      //***********************************************
+      chunks.push({
+        after: /<common>/,
+        shader: [
+        ],
+      });
+      //***********************************************
+      //***********************************************
+      chunks.push({
+        before: /<aomap_fragment>/,
+        shader: [],
+      });
+      chunks.push({
+        after: /<aomap_fragment>/,
+        shader: [
+        ],
+      });
+      //***********************************************
+      //***********************************************
+      chunks.push({
+        after: /vec3 outgoingLight/,
+        shader: [
+        ],
+      });
+      //***********************************************
+      //***********************************************
+      return chunks;
+    }
+    // EO getFragmentChunks
+  }
+
+  // ######################################################################
+  // ######################################################################
+
+  OrbitalsShader.prototype.lucency = null;
+  OrbitalsShader.prototype.attenuate = null;
+  OrbitalsShader.prototype.trailLength = null;
+  OrbitalsShader.prototype.trailStart = null;
+  OrbitalsShader.prototype.trailEnd = null;
+
+  // assign class to global namespace
+  THRAPP.OrbitalsShader = OrbitalsShader;
+
+  // ######################################################################
+  // ######################################################################
+})(THREE, THRAPP);
   // EO private scope
-  

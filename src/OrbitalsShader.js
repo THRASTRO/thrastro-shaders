@@ -26,7 +26,7 @@ if (!window.THRAPP) {
       this.defines['USE_LOGDEPTHBUF_EXT'] = 1;
       this.isRawShaderMaterial = true;
 
-      this.uniforms.time = { type: 'f', value: parameters.scale || 0.0 };
+      this.uniforms.time = { type: 'f', value: parameters.time || 0.0 };
       this.uniforms.scale = { type: 'f', value: parameters.scale || 1.0 };
       this.uniforms.lucency = { type: 'f', value: parameters.lucency || 0.75 };
       this.uniforms.attenuate = { type: 'f', value: parameters.attenuate || 0.0 };

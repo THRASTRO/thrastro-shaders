@@ -34,7 +34,6 @@ if (!window.THRAPP) {
         atmosphere.Km = atmosphere.Km || 0.001;
         atmosphere.ESun = atmosphere.ESun || 20.0;
         atmosphere.bias = atmosphere.bias || 0.5;
-        atmosphere.skale = atmosphere.skale || 0.5;
         atmosphere.exposure = atmosphere.exposure || 2.5;
         atmosphere.scaleDepth = atmosphere.scaleDepth || 0.25;
         atmosphere.scaleHeight = atmosphere.scaleHeight || 1.025;
@@ -167,7 +166,7 @@ if (!window.THRAPP) {
           "  v3MieColor *= 0.0;",
           "  float fInvScaleDepth = (1.0 / fScaleDepth);",
           "  float fScaleOverScaleDepth = fScale / fScaleDepth;",
-          
+
           "  // Do all the calculation in local space, since this yields best precision",
           "  vec3 cameraLocal = fCameraPos; // vec3(modelMatrixInverse * vec4(cameraPosition, 1.0));",
 

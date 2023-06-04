@@ -33,7 +33,6 @@ if (!window.THRAPP) {
         atmosphere.Km = atmosphere.Km || 0.001;
         atmosphere.ESun = atmosphere.ESun || 20.0;
         atmosphere.bias = atmosphere.bias || 0.5;
-        atmosphere.skale = atmosphere.skale || 0.5;
         atmosphere.exposure = atmosphere.exposure || 2.5;
         atmosphere.scaleDepth = atmosphere.scaleDepth || 0.25;
         atmosphere.scaleHeight = atmosphere.scaleHeight || 1.025;

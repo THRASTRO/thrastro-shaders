@@ -34,8 +34,9 @@ rendererHook.push(function () {
 });
 
 // Idempotent calls
-sphere.add(eclipser);
-solsys.add(sphere);
+planet.add(eclipser);
+planet.add(sphere);
+solsys.add(planet);
 
 // Animate eclipser
 if (document.location.search.match(/animate/)) {

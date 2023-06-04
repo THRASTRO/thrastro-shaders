@@ -8,7 +8,7 @@ if (!window.THRAPP) {
 }
 
 // Allow to overwrite base material
-THRAPP.BaseMaterial = THRAPP.BaseMaterial || 
+THRAPP.BaseMaterial = THRAPP.BaseMaterial ||
     THRAPP.CustomMeshPhysicalMaterial;
 
 // private scope
@@ -180,14 +180,6 @@ THRAPP.BaseMaterial = THRAPP.BaseMaterial ||
           "#endif",
           "  // Local vertex position",
           "  varying vec3 vertexPos;",
-          "  // Scale from local to world",
-          "  varying vec3 localScale;",
-          "  // Rotate from local to world",
-          // "  varying mat4 localRotation;",
-          "  // Rotate and scale to world",
-          "  varying mat4 localRotScale;",
-          "  // Translate back to local space",
-          "  varying mat4 modelMatrixInverse;",
         ],
       });
       // extend fragment shaders

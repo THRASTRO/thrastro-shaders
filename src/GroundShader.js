@@ -241,6 +241,7 @@ if (!window.THRAPP) {
           "#if USE_GROUNDSHADER > 0 && NUM_STARS > 0",
           "  varying vec3 v3RayleighColor;",
           "  varying vec3 v3MieColor;",
+          "  uniform float fExposure;",
           "  uniform float fBias;",
           "#endif",
         ],
@@ -250,6 +251,7 @@ if (!window.THRAPP) {
         shader: [
           "#if USE_GROUNDSHADER > 0 && NUM_STARS > 0",
           "  vec3 color = v3RayleighColor + 0.25 * v3MieColor;",
+          "  color = vec3(1.0) - exp(-fExposure * color);",
           "  outgoingLight = mix(outgoingLight, color, fBias);",
           "#endif",
         ],

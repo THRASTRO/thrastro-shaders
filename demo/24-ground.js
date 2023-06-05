@@ -33,6 +33,7 @@ var sphereMaterial = new THRAPP.GroundShader({
     wavelength: earthSpectra,
     innerRadius: earthRadi,
     height: earthRadi * 0.015,
+    exposure: 0.25
   },
 });
 

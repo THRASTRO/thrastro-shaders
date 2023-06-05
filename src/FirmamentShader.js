@@ -1,5 +1,5 @@
 /*
-    Copyright 2017-2022 Marcel Greter
+    Copyright 2017-2023 Marcel Greter
     https://www.github.com/mgreter
 */
 

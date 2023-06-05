@@ -1,4 +1,4 @@
 /*
 Three.js App Framework (https://github.com/mgreter/three.app)
-- Copyright (c) 2017-2022 Marcel Greter (http://github.com/mgreter)
+- Copyright (c) 2017-2023 Marcel Greter (http://github.com/mgreter)
 */

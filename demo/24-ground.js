@@ -27,7 +27,7 @@ var sphereMaterial = new THRAPP.GroundShader({
   nightMap: loader.load("earth/night.jpg"),
   // Ground shader config
   atmosphere: {
-    bias: 0.5,
+    bias: 0.25,
     scaleDepth: 0.25,
     scaleHeight: 0.1,
     wavelength: earthSpectra,
@@ -35,6 +35,10 @@ var sphereMaterial = new THRAPP.GroundShader({
     height: earthRadi * 0.015,
   },
 });
+
+// Make sure textures use the correct color space
+sphereMaterial.map.colorSpace = THREE.SRGBColorSpace;
+sphereMaterial.nightMap.colorSpace = THREE.SRGBColorSpace;
 
 // Create THRAPP Mesh (connects the mesh to the material)
 var sphere = new THRAPP.Mesh(sphereGeometry, sphereMaterial);

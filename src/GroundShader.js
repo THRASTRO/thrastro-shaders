@@ -41,9 +41,9 @@ if (!window.THRAPP) {
 
         var wavelength = atmosphere.wavelength;
         uniforms.v3InvWavelength.value.set(
-          1.0 / Math.pow(wavelength.x, 4.0),
-          1.0 / Math.pow(wavelength.y, 4.0),
-          1.0 / Math.pow(wavelength.z, 4.0)
+          1.0 / Math.pow(wavelength.r, 4.0),
+          1.0 / Math.pow(wavelength.g, 4.0),
+          1.0 / Math.pow(wavelength.b, 4.0)
         );
 
         var G = atmosphere.G;
@@ -116,7 +116,7 @@ if (!window.THRAPP) {
       uniforms.fInnerRadius2 = { type: "f", value: 0 };
       uniforms.fCameraHeight = { type: "f", value: 0 };
       uniforms.fCameraHeight2 = { type: "f", value: 0 };
-      uniforms.v3InvWavelength = { type: "v3", value: new THREE.Vector3() };
+      uniforms.v3InvWavelength = { type: "v3", value: new THREE.Color() };
       uniforms.fCameraPos = { type: "v3", value: new THREE.Vector3() };
     }
 

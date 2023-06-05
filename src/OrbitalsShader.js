@@ -49,7 +49,6 @@ if (!window.THRAPP) {
         precision highp float;
         precision highp int;
         #define HIGH_PRECISION
-        #define SHADER_NAME CustomLineMaterial
         #define GAMMA_FACTOR 2
         uniform mat4 viewMatrix;
         uniform vec3 cameraPosition;

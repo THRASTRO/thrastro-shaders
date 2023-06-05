@@ -20,6 +20,11 @@ var renderer = new THREE.WebGLRenderer({
     logarithmicDepthBuffer: true
 });
 
+// Set the output color space (since three.js r152)
+// renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
+renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
+THREE.ColorManagement.enabled = false;
+
 // Configure renderer clear color
 renderer.setClearColor("#333333");
 

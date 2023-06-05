@@ -15,8 +15,6 @@ THRAPP.BaseMaterial = THRAPP.BaseMaterial ||
 (function (THREE, THRAPP) {
   "use strict";
 
-  var mat4 = new THREE.Matrix4();
-
   class EclipseShader extends THRAPP.BaseMaterial {
     constructor(parameters) {
       super(parameters);
@@ -34,8 +32,15 @@ THRAPP.BaseMaterial = THRAPP.BaseMaterial ||
         this.uniforms.laserSize.value = parameters.laserSize;
       }
       this.pbody = parameters.pbody || null;
+      this.localWorldInverse = new THREE.Matrix4();
     }
     // EO constructor
+
+    // Called on ctor
+    presetValues() {
+      this.pbody = null;
+    }
+    // EO presetValues
 
     // Add a new light source
     addStar(stars) {
@@ -77,6 +82,7 @@ THRAPP.BaseMaterial = THRAPP.BaseMaterial ||
       uniforms.lightPos = { type: "v3v", value: [] };
       uniforms.laserSize = { type: "f", value: 5e-7 };
       uniforms.bodyRadius = { type: "f", value: 5e-7 };
+      uniforms.localScale = { type: "v3", value: new THREE.Vector3(1, 1, 1) };
     }
     // EO addUniforms
 
@@ -88,19 +94,38 @@ THRAPP.BaseMaterial = THRAPP.BaseMaterial ||
       super.updateUniforms();
       if (self.pbody) {
         self.pbody.updateMatrix();
-        mat4.copy(self.pbody.matrixWorld).invert();
+        // Create local space to world matrix
+        self.localWorldInverse.copy(
+          self.pbody.matrixWorld).invert();
+        // var tmp = new THREE.Matrix4()
+        // tmp.makeScale(
+        //   self.pbody.scale.x,
+        //   self.pbody.scale.y,
+        //   self.pbody.scale.z);
+        // mat4.premultiply(tmp);
+        // Inlined to optimize
+        const sx = self.pbody.scale.x;
+        const sy = self.pbody.scale.y;
+        const sz = self.pbody.scale.z;
+        const te = self.localWorldInverse.elements;
+        te[0] *= sx; te[4] *= sx; te[8] *= sx; te[12] *= sx;
+        te[1] *= sy; te[5] *= sy; te[9] *= sy; te[13] *= sy;
+        te[2] *= sz; te[6] *= sz; te[10] *= sz; te[14] *= sz;
+        // Sphere may use geometry with radius 1 and scale it
+        // Remove local scale and keep positions in world scale
+        uniforms.localScale.value.copy(self.pbody.scale);
       }
       // Update eclipser positions
       for (var i = 0; i < eclipsers.length; i += 1) {
-        uniforms.eclipserPos.value[i].setFromMatrixPosition(
-          eclipsers[i].matrixWorld
-        );
-        uniforms.eclipserPos.value[i].applyMatrix4(mat4);
+        var value = uniforms.eclipserPos.value[i];
+        value.setFromMatrixPosition(eclipsers[i].matrixWorld);
+        value.applyMatrix4(self.localWorldInverse);
       }
-      // Update star positions
+      // Update star/light positions
       for (var i = 0; i < stars.length; i += 1) {
-        uniforms.lightPos.value[i].setFromMatrixPosition(stars[i].matrixWorld);
-        uniforms.lightPos.value[i].applyMatrix4(mat4);
+        var value = uniforms.lightPos.value[i];
+        value.setFromMatrixPosition(stars[i].matrixWorld);
+        value.applyMatrix4(self.localWorldInverse);
       }
     }
     // EO updateUniforms
@@ -144,14 +169,18 @@ THRAPP.BaseMaterial = THRAPP.BaseMaterial ||
       //***********************************************
       chunks.push({
         after: /<common>/,
-        shader: ["  // Local vertex position", "  varying vec3 vertexPos;"],
+        shader: [
+          "  // Local vertex position",
+          "  varying vec3 vertexPos;",
+          "  uniform vec3 localScale;",
+        ],
       });
 
       chunks.push({
         before: /<begin_vertex>/,
         shader: [
           " // Pass vertex position to fragments",
-          "  vertexPos = position;",
+          "  vertexPos = position * localScale;",
         ],
       });
       //***********************************************
@@ -167,6 +196,8 @@ THRAPP.BaseMaterial = THRAPP.BaseMaterial ||
         after: /<common>/,
         shader: [
           "  uniform float bodyRadius;",
+          "  // Local vertex in world scale",
+          "  varying vec3 vertexPos;",
           "#ifdef USE_ECLIPSE_LASER",
           "  uniform float laserSize;",
           "#endif",
@@ -178,8 +209,6 @@ THRAPP.BaseMaterial = THRAPP.BaseMaterial ||
           "  uniform vec3 eclipserPos[NUM_ECLIPSERS];",
           "  uniform float eclipserSize[NUM_ECLIPSERS];",
           "#endif",
-          "  // Local vertex position",
-          "  varying vec3 vertexPos;",
         ],
       });
       // extend fragment shaders

@@ -75,6 +75,13 @@ if (!window.THRAPP) {
       }
     }
 
+    // Called on ctor
+    presetValues() {
+      this.camera = null;
+      this.atmosphere = null;
+    }
+    // EO presetValues
+
     updateUniforms() {
       var self = this,
         uniforms = self.uniforms;
@@ -83,12 +90,7 @@ if (!window.THRAPP) {
       var camPos = uniforms.fCameraPos.value;
       // Get world coordinates of objects
       camPos.setFromMatrixPosition(camera.matrixWorld)
-      // Calculate the world to local matrix
-      if (self.pbody && self.pbody.matrixWorld) {
-        mat4.copy(self.pbody.matrixWorld).invert();
-        // Transform world to local coordinates
-        camPos.applyMatrix4(mat4);
-      }
+      camPos.applyMatrix4(self.localWorldInverse);
       // Update derived uniforms
       var h2 = camPos.lengthSq(),
         h = Math.sqrt(h2);
@@ -172,7 +174,7 @@ if (!window.THRAPP) {
 
           "  // Get the ray from the camera to the vertex and its length",
           "  // which is the far point of the ray passing through the atmosphere",
-          "  vec3 v3Ray = position - cameraLocal;",
+          "  vec3 v3Ray = (vertexPos - cameraLocal);",
           "  float fFar = length(v3Ray);",
           "  v3Ray /= fFar;",
 
@@ -184,17 +186,17 @@ if (!window.THRAPP) {
           "  float fNear = 0.5 * (-B - sqrt(fDet));",
 
           "  float fDepth = exp((fInnerRadius - fOuterRadius) * fScaleOverScaleDepth);",
-          "  float fCameraAngle = dot(-v3Ray, position) / length(position);",
+          "  float fCameraAngle = dot(-v3Ray, vertexPos) / length(vertexPos);",
           "  float fCameraScale = scale(fCameraAngle);",
           "  float fCameraOffset = fDepth*fCameraScale;",
 
           THRAPP.StartStaticForLoop("n", "NUM_STARS"),
           "    // Do all the calculation in local space, since this yields best precision",
           "    vec3 lightLocal = lightPos[n]; // vec3(modelMatrixInverse * vec4(starPos[n], 1.0));",
-          "    // Calculate the ray's starting position, then calculate its scattering offset",
+          "    // Calculate the ray's starting vertexPos, then calculate its scattering offset",
           "    vec3 v3Start = cameraLocal + v3Ray * fNear;",
           "    fFar -= fNear;",
-          "    float fLightAngle = dot(lightLocal, position) / length(position);",
+          "    float fLightAngle = dot(lightLocal, vertexPos) / length(vertexPos);",
           "    float fLightScale = scale(fLightAngle);",
           "    float fTemp = (fLightScale + fCameraScale);",
 

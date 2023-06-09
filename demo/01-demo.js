@@ -29,8 +29,14 @@ renderer.useLegacyLights = false;
 // Configure renderer clear color
 renderer.setClearColor("#333333");
 
-// Configure renderer size (ToDo: update with window resize)
+// Configure renderer size
 renderer.setSize( window.innerWidth, window.innerHeight );
+// Update the size when window is resized
+window.addEventListener('resize', function () {
+    renderer.setSize( window.innerWidth, window.innerHeight );
+    camera.aspect = window.innerWidth / window.innerHeight;
+})
+
 
 // Append renderer element to the DOM
 document.body.appendChild( renderer.domElement );
